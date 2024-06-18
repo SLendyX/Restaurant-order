@@ -1,0 +1,106 @@
+body {
+    margin: 0;
+    font-family: "Smythe", system-ui;
+} 
+
+.header{
+    width:600px;
+    margin: 0 auto 0 auto;
+    height:180px;
+    background-image: url("/hamburger.jfif");
+    background-repeat: no-repeat;
+    background-size:100% 180%;
+    background-position-y: -100px;
+    display: flex;
+    align-items: center;
+    padding-left: 50px;
+    color: white;
+}
+
+.header-title{
+    font-weight: 400;
+    font-style: normal;
+    font-size: 39px;
+    margin: 0;
+}
+
+.header-subtitle{
+    font-weight: 400;
+    font-style: normal;
+    font-size:22px;
+    margin-top:19px
+}
+
+main{
+    width: 600px;
+    padding: 70px 0px 0px 40px;
+    /* height: 3000px; */
+    margin: 0 auto 0 auto;
+    /* background-color: pink; */
+}
+
+li{
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom:50px;
+    margin-bottom:45px;
+    border-bottom: 1px solid #D2D2D2;
+}
+
+.menu-item-container{
+    display: flex;
+    gap:30px;
+}
+
+
+ul{
+    margin:0px;
+    padding:0;
+    font-size: 70px;
+    
+}
+
+i{
+    user-select: none;
+    font-style: normal;
+}
+
+span{
+    font-weight: 500;
+    margin:0;
+}
+
+.title-span{
+    font-size: 28px;
+}
+
+.price-span{
+    font-size:20px;
+}
+
+p{
+    color: #8B8B8B;
+    font-size: 16px;
+    margin-top: 9px 0 9px 0;
+}
+
+.add-btn{
+    font-family: "Inter", sans-serif;
+    font-size:32px;
+    font-weight: 200;
+    color: #3C3C3C;
+    border-radius: 50%;
+    border:1.5px solid #DEDEDE; 
+    margin:0;
+    padding: 5.5715px 14.6965px 8.3px ;
+
+    cursor:pointer;
+    background-color: white;
+    /* text-align: center; */
+}
+
+.add-btn:hover{
+    background-color: #DEDEDE;
+}
