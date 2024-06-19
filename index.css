@@ -32,8 +32,8 @@ body {
 }
 
 main{
-    width: 600px;
-    padding: 70px 0px 0px 40px;
+    width: 508px;
+    padding: 70px 0px;
     /* height: 3000px; */
     margin: 0 auto 0 auto;
     /* background-color: pink; */
@@ -44,9 +44,12 @@ li{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom:50px;
     margin-bottom:45px;
     border-bottom: 1px solid #D2D2D2;
+}
+
+.spacing-menu{
+    padding-bottom:50px;
 }
 
 .menu-item-container{
@@ -58,13 +61,12 @@ li{
 ul{
     margin:0px;
     padding:0;
-    font-size: 70px;
-    
 }
 
 i{
     user-select: none;
     font-style: normal;
+    font-size: 70px;
 }
 
 span{
@@ -80,7 +82,7 @@ span{
     font-size:20px;
 }
 
-p{
+.ingredient-list{
     color: #8B8B8B;
     font-size: 16px;
     margin-top: 9px 0 9px 0;
@@ -103,4 +105,64 @@ p{
 
 .add-btn:hover{
     background-color: #DEDEDE;
+}
+
+footer{
+    width:508px;
+    margin:0 auto 0 auto;
+    text-align: center;
+}
+
+.hidden{
+    display: none;
+}
+
+.space-between{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.remove-btn{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 12px;
+    color: #BBBBBB;
+    border: none;
+    background: none;
+    padding-top:5px;
+    margin-left: 13px;
+}
+
+.remove-btn:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.order-items-container{
+    border-bottom: 2px solid #393333;
+    padding-bottom: 9px;
+    margin-bottom: 14px;
+}
+
+.order-items-container li{
+    border-bottom: none;
+    margin-bottom: 22px;;
+}
+
+#complete-order-btn{
+    background-color: #16DB99;
+    color:white;
+    font-size:16px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight:700;
+    width: 508px;
+    padding: 20px 0;
+    margin:53px 0;
+    border-radius: 3px;
+    border:none;
+}
+
+#complete-order-btn:hover{
+    cursor:pointer;
+    background-color: #14b680;
 }
