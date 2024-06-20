@@ -4,6 +4,7 @@ const menuList = document.getElementById("list-element");
 const orderFooter = document.getElementById("order-footer")
 const itemList = document.getElementById("item-list")
 const totalPrice = document.getElementById("total-price")
+const checkOutBtn = document.getElementById("complete-order-btn")
 
 let orderArray = []
 
@@ -102,9 +103,11 @@ function generateMenu(){
 
 }
 
-//<li class="price-span">$</li>
-//<li class="title-span">Pizza <button class="remove-btn">remove</button></li>
-
-
-
 generateMenu()
+
+checkOutBtn.addEventListener("click", 
+    function() {
+        document.getElementById("modal").classList.toggle("hidden")
+        this.disabled = !this.disabled
+        document.body.scrollTop = document.documentElement.scrollTop = 0
+    });

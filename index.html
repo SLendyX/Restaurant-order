@@ -30,6 +30,21 @@
 
         </footer>
 
+        <div class="modal hidden" id = "modal">
+            <form>
+                <h3 class="modal-title">Enter card details</h3>
+                <input type="text" required="required"
+                pattern="[a-zA-Z ]+" placeholder="Enter your name">
+
+                <input type="text" required="required" 
+                pattern="[0-9]+" placeholder="Enter card number">
+
+                <input type="text" required="required" 
+                pattern="[0-9]{3}" placeholder="Enter CVV">
+
+                <button id="complete-order-btn">Pay</button>
+            </form>
+        </div>
 
 	    <script src="index.js" type="module"></script>
     </body>
