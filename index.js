@@ -5,10 +5,26 @@ const orderFooter = document.getElementById("order-footer")
 const itemList = document.getElementById("item-list")
 const totalPrice = document.getElementById("total-price")
 const checkOutBtn = document.getElementById("complete-order-btn")
+const modalForm = document.getElementById("modal").children[0]
+const afterpayMessage = document.getElementById("afterpay-message-container")
 
 let orderArray = []
 
+generateMenu()
+
 function generateMenu(){
+
+    addItemsToMenu(menuArray)
+
+    const menuButtons = document.querySelectorAll(".add-btn");
+    
+    for(let btn of menuButtons){    
+        btn.addEventListener("click" , addItemsToOrder)
+    }
+
+}
+
+function addItemsToMenu(menuArray){
     let listItem = ``
 
     menuArray.forEach(menuItem => { 
@@ -27,87 +43,153 @@ function generateMenu(){
     })
 
     menuList.innerHTML = listItem;
-
-    const menuButtons = document.querySelectorAll(".add-btn");
-    
-    for(let btn of menuButtons){    
-        btn.addEventListener("click" ,() => {
-            const itemObject = menuArray.filter((menuItem)=>{
-                return menuItem.id == btn.dataset.id
-            })[0]
-
-            if(orderFooter.className === "hidden")
-                orderFooter.classList.toggle("hidden")
-
-            // const childArray = [...itemList.children]
-
-            // const duplicateItem = childArray.find((child) => child.dataset.id === btn.dataset.id)
-
-            // if(!duplicateItem){
-
-            const itemContainer = document.createElement("li")
-            itemContainer.classList+="space-between"
-            itemContainer.dataset.id = btn.dataset.id;
-
-            const newItemInList = document.createElement("li")
-            newItemInList.classList+="title-span"
-            newItemInList.textContent = `${itemObject.name}`
-            
-            const removeBtn = document.createElement("button")
-            removeBtn.classList+="remove-btn"
-            removeBtn.textContent = "remove"
-
-            removeBtn.addEventListener("click", ()=>{
-
-                const removedItemPrice = Number(removeBtn.parentElement.parentElement.children[1].textContent.substring(1))
-                removeBtn.parentElement.parentElement.parentElement.removeChild(removeBtn.parentElement.parentElement)
-
-                let hasPriceBeenFound = false
-                orderArray = orderArray.filter(function(orderItem){
-                    if(orderItem == removedItemPrice && !hasPriceBeenFound){
-                        hasPriceBeenFound = !hasPriceBeenFound;
-                        return 0;
-                    }
-                    return 1
-                })
-                try{
-                    const newTotal = orderArray.reduce(
-                        (total, price) =>  total + price)
-                
-                    totalPrice.textContent = `$${newTotal}`
-                }catch(err){
-                    orderFooter.classList.toggle("hidden")
-                }
-            })
-
-            newItemInList.appendChild(removeBtn)
-            itemContainer.appendChild(newItemInList)
-
-            const newPriceInList = document.createElement("li")
-            newPriceInList.classList+="price-span"
-            newPriceInList.textContent = `$${itemObject.price}`
-
-            itemContainer.appendChild(newPriceInList)
-
-            itemList.appendChild(itemContainer)
-
-            orderArray.push(itemObject.price)
-
-            const newTotal = orderArray.reduce( 
-                (total, price) =>  total + price)
-            
-            totalPrice.textContent = `$${newTotal}`
-            // }
-        })
-    }
-
 }
 
-generateMenu()
+
+function addItemsToOrder(){
+    const itemObject = menuArray.filter(menuItem=>
+        menuItem.id == this.dataset.id)[0]
+
+    if(orderFooter.className === "hidden")
+        orderFooter.classList.toggle("hidden")
+
+    const childArray = [...itemList.children]
+
+    const duplicateItem = childArray.find((child) => 
+        child.dataset.id === this.dataset.id)
+
+    if(!duplicateItem){
+        createItem(this, itemObject)       
+    }else{
+        ModifyDuplicate(duplicateItem.children[0], itemObject)
+    }
+}
+
+function ModifyDuplicate(duplicate, itemObject, isDecrementing=false){
+        let duplicateText = duplicate.innerHTML
+        const indexOfCount = duplicateText.indexOf('x')+1
+
+        let substring = duplicateText.substring(indexOfCount)
+        const buttonSubString = substring.substring(substring.indexOf('<'))
+
+        if(!isDecrementing)
+        substring = Number(substring.
+            substring(0, substring.indexOf('<')))+1
+        else
+            substring = Number(substring.
+                substring(0, substring.indexOf('<')))-1
+
+        const count = Number(substring)
+        
+        substring+=buttonSubString
+
+        duplicateText = duplicateText.split('x')[0] + "x " + substring
+        duplicate.innerHTML = duplicateText
+
+        if(count ===1)
+            duplicate.children[0].addEventListener("click", removeItem);
+        else
+            duplicate.children[0].addEventListener("click", removeDuplicate);
+
+        if(itemObject){
+            orderArray.push(itemObject.price)
+            recalculateTotal(orderArray)
+        }
+}
+
+function createItem(btn, itemObject){
+    const itemContainer = document.createElement("li")
+    itemContainer.classList+="space-between"
+    itemContainer.dataset.id = btn.dataset.id;
+
+    const newItemInList = document.createElement("li")
+    newItemInList.classList+="title-span"
+    newItemInList.textContent = `${itemObject.name} x 1`
+    
+    const removeBtn = document.createElement("button")
+    removeBtn.classList+="remove-btn"
+    removeBtn.textContent = "remove"
+
+    removeBtn.addEventListener("click", removeItem)
+
+    newItemInList.appendChild(removeBtn)
+    itemContainer.appendChild(newItemInList)
+
+    const newPriceInList = document.createElement("li")
+    newPriceInList.classList+="price-span"
+    newPriceInList.textContent = `$${itemObject.price}`
+
+    itemContainer.appendChild(newPriceInList)
+
+    itemList.appendChild(itemContainer)
+
+    orderArray.push(itemObject.price)
+    recalculateTotal(orderArray)
+}
+
+
+function removeItem(){
+    const removedItemPrice = Number(this.parentElement.parentElement.children[1].textContent.substring(1))
+    this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
+
+    let hasPriceBeenFound = false
+    orderArray = orderArray.filter(function(orderItem){
+    if(orderItem == removedItemPrice && !hasPriceBeenFound){
+        hasPriceBeenFound = !hasPriceBeenFound;
+        return 0;
+    }
+    return 1
+    })
+    try{
+        recalculateTotal(orderArray)
+    }catch(err){
+        orderFooter.classList.toggle("hidden")
+    }
+}
+
+function removeDuplicate(){
+    const removedItemPrice = Number(this.parentElement.parentElement.children[1].textContent.substring(1))
+
+    let hasPriceBeenFound = false
+    orderArray = orderArray.filter(function(orderItem){
+    if(orderItem == removedItemPrice && !hasPriceBeenFound){
+        hasPriceBeenFound = !hasPriceBeenFound;
+        return 0;
+    }
+    return 1
+    })
+    recalculateTotal(orderArray)
+
+    const duplicate = this.parentElement
+    ModifyDuplicate(this.parentElement, null, true)
+}
+
+
+function recalculateTotal(orderArray){   
+    totalPrice.textContent = `$${orderArray.reduce( 
+        (total, price) =>  total + price)}`
+}
 
 checkOutBtn.addEventListener("click", 
     function() {
         document.getElementById("modal").classList.toggle("hidden")
         this.disabled = !this.disabled
         document.body.scrollTop = document.documentElement.scrollTop = 0
-    });
+});
+
+
+
+
+modalForm.addEventListener("submit", function(e){
+        e.preventDefault()
+        modalForm.parentElement.classList.toggle("hidden")
+        orderFooter.classList.toggle("hidden")
+        afterpayMessage.classList.toggle("hidden")
+        window.scrollTo(0, document.body.scrollHeight);
+        checkOutBtn.disabled = !checkOutBtn.disabled
+
+        for(let button of document.getElementsByClassName("add-btn"))
+            button.disabled = !button.disabled
+})
+
+

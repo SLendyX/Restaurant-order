@@ -3,6 +3,8 @@ body {
     font-family: "Smythe", system-ui;
 } 
 
+/* header */
+
 .header{
     width:600px;
     margin: 0 auto 0 auto;
@@ -31,13 +33,18 @@ body {
     margin-top:19px
 }
 
+
+/* main body */
+
 main{
     width: 508px;
-    padding: 70px 0px;
+    padding: 70px 0px 0px;
     /* height: 3000px; */
     margin: 0 auto 0 auto;
     /* background-color: pink; */
 }
+
+/* list items */
 
 li{
     list-style: none;
@@ -74,14 +81,6 @@ span{
     margin:0;
 }
 
-.title-span{
-    font-size: 28px;
-}
-
-.price-span{
-    font-size:20px;
-}
-
 .ingredient-list{
     color: #8B8B8B;
     font-size: 16px;
@@ -107,10 +106,15 @@ span{
     background-color: #DEDEDE;
 }
 
-footer{
-    width:508px;
-    margin:0 auto 0 auto;
-    text-align: center;
+/* general utility */
+
+.title-span{
+    font-size: 28px;
+    margin-top:0
+}
+
+.price-span{
+    font-size:20px;
 }
 
 .hidden{
@@ -121,6 +125,14 @@ footer{
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+/* footer elements */
+
+footer{
+    width:508px;
+    margin:0 auto 0 auto;
+    text-align: center;
 }
 
 .remove-btn{
@@ -149,7 +161,7 @@ footer{
     margin-bottom: 22px;;
 }
 
-#complete-order-btn{
+.complete-order-btn{
     background-color: #16DB99;
     color:white;
     font-size:16px;
@@ -162,10 +174,12 @@ footer{
     border:none;
 }
 
-#complete-order-btn:hover{
+.complete-order-btn:hover{
     cursor:pointer;
     background-color: #14b680;
 }
+
+/* modal */
 
 .modal{
     width:524px;
@@ -203,6 +217,18 @@ footer{
     margin-bottom: 23px;
 }
 
-.modal #complete-order-btn{
+.modal .complete-order-btn{
     margin: 23px 0 0;
+}
+
+/* afterpay message */
+
+.afterpay-message-container{
+    color: #065F46;
+    background-color:#ECFDF5;
+    font-size: 32px;
+    text-align: center;
+    padding: 25px 0;
+    border-radius: 3px;
+    margin-bottom: 252px;
 }

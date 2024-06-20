@@ -14,6 +14,9 @@
         </div>
         <main>
             <ul id="list-element"></ul>
+            <div class="afterpay-message-container hidden" id="afterpay-message-container">
+                <p>Thanks, James! Your order is on its way!</p>
+            </div>
         </main>
 
         <footer class="hidden" id="order-footer">
@@ -26,7 +29,7 @@
                 <span class="title-span">Total price:</span>
                 <span class="price-span" id="total-price">$</span>
             </div>
-            <button id="complete-order-btn">Complete order</button>
+            <button class="complete-order-btn" id="complete-order-btn">Complete order</button>
 
         </footer>
 
@@ -42,9 +45,11 @@
                 <input type="text" required="required" 
                 pattern="[0-9]{3}" placeholder="Enter CVV">
 
-                <button id="complete-order-btn">Pay</button>
+                <button class="complete-order-btn" id="pay-btn">Pay</button>
             </form>
         </div>
+
+        
 
 	    <script src="index.js" type="module"></script>
     </body>
