@@ -7,8 +7,17 @@ const totalPrice = document.getElementById("total-price")
 const checkOutBtn = document.getElementById("complete-order-btn")
 const modalForm = document.getElementById("modal").children[0]
 const afterpayMessage = document.getElementById("afterpay-message-container")
+const discountEl = document.getElementById("discount")
+const stars = document.getElementsByClassName("star");
 
 let orderArray = []
+
+function ItemObject(price, id){
+    this.price = price;
+    this.id = id
+    return this
+}
+
 
 generateMenu()
 
@@ -58,10 +67,13 @@ function addItemsToOrder(){
     const duplicateItem = childArray.find((child) => 
         child.dataset.id === this.dataset.id)
 
-    if(!duplicateItem){
-        createItem(this, itemObject)       
+    if(!duplicateItem){{
+        createItem(this, itemObject) 
+        addDiscount(checkDiscount(orderArray))
+    }     
     }else{
         ModifyDuplicate(duplicateItem.children[0], itemObject)
+        addDiscount(checkDiscount(orderArray))
     }
 }
 
@@ -92,7 +104,7 @@ function ModifyDuplicate(duplicate, itemObject, isDecrementing=false){
             duplicate.children[0].addEventListener("click", removeDuplicate);
 
         if(itemObject){
-            orderArray.push(itemObject.price)
+            orderArray.push(new ItemObject(itemObject.price, itemObject.id))
             recalculateTotal(orderArray)
         }
 }
@@ -123,23 +135,30 @@ function createItem(btn, itemObject){
 
     itemList.appendChild(itemContainer)
 
-    orderArray.push(itemObject.price)
+    orderArray.push(new ItemObject(itemObject.price, itemObject.id))
     recalculateTotal(orderArray)
 }
 
 
 function removeItem(){
-    const removedItemPrice = Number(this.parentElement.parentElement.children[1].textContent.substring(1))
+    const removedItemObject = new ItemObject(Number(this.parentElement.parentElement.children[1].textContent.substring(1)),
+    this.parentElement.parentElement.dataset.id)
     this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)
+
+    console.log(removedItemObject)
+
 
     let hasPriceBeenFound = false
     orderArray = orderArray.filter(function(orderItem){
-    if(orderItem == removedItemPrice && !hasPriceBeenFound){
-        hasPriceBeenFound = !hasPriceBeenFound;
-        return 0;
-    }
-    return 1
+        if(orderItem.price == removedItemObject.price && 
+        orderItem.id == removedItemObject.id && !hasPriceBeenFound){
+            hasPriceBeenFound = !hasPriceBeenFound;
+            return 0;
+        }
+        return 1
     })
+    addDiscount(checkDiscount(orderArray))
+
     try{
         recalculateTotal(orderArray)
     }catch(err){
@@ -148,16 +167,21 @@ function removeItem(){
 }
 
 function removeDuplicate(){
-    const removedItemPrice = Number(this.parentElement.parentElement.children[1].textContent.substring(1))
+    const removedItemObject = new ItemObject(Number(this.parentElement.parentElement.children[1].textContent.substring(1)),
+    this.parentElement.parentElement.dataset.id)
 
     let hasPriceBeenFound = false
     orderArray = orderArray.filter(function(orderItem){
-    if(orderItem == removedItemPrice && !hasPriceBeenFound){
-        hasPriceBeenFound = !hasPriceBeenFound;
-        return 0;
-    }
-    return 1
+        if(orderItem.price == removedItemObject.price && 
+            orderItem.id == removedItemObject.id && !hasPriceBeenFound){
+                hasPriceBeenFound = !hasPriceBeenFound;
+            return 0;
+        }
+        return 1
     })
+
+    addDiscount(checkDiscount(orderArray))
+
     recalculateTotal(orderArray)
 
     const duplicate = this.parentElement
@@ -166,9 +190,59 @@ function removeDuplicate(){
 
 
 function recalculateTotal(orderArray){   
-    totalPrice.textContent = `$${orderArray.reduce( 
-        (total, price) =>  total + price)}`
+    let pricesArray = orderArray.map(orderObject => orderObject.price) 
+    pricesArray = [...pricesArray, ...checkDiscount(orderArray)]
+
+    totalPrice.textContent = `$${(pricesArray.reduce((total, price) =>  total + price)).toFixed(2)}`
 }
+
+function checkDiscount(orderArray){
+    const drinkArray = orderArray.filter(orderObject => orderObject.id === 2)
+    const foodArray = orderArray.filter(orderObject => orderObject.id !== 2)
+    const n = Math.min(drinkArray.length, foodArray.length)
+
+    let discountArray = []
+    for(let i=0; i<n; i++){
+        discountArray[i] = -(0.15*(drinkArray[i].price + foodArray[i].price))
+    }
+    return discountArray
+}
+
+function addDiscount(discountArray){
+    if(discountArray.length > 0){
+        if(discountEl.classList.contains("hidden")){
+            discountEl.classList.toggle("hidden");
+            discountEl.classList.toggle("space-between");
+        }
+
+        discountEl.children[1].textContent = `-$${(-1*discountArray.
+        reduce((total, discount) => total+discount)).toFixed(2)}`
+        
+    }else if(!discountEl.classList.contains("hidden")){
+        discountEl.classList.toggle("hidden");
+        discountEl.classList.toggle("space-between");
+    }
+
+}
+
+for(let star of stars)
+    star.addEventListener("click", starRating)
+
+function starRating(){
+    remove();
+    for(let i=0; i<this.dataset.number; i++)
+        stars[i].className = "star yellow"
+}
+
+function remove() {
+    let i = 0;
+    while (i < 5) {
+        stars[i].className = "star";
+        i++;
+    }
+}
+
+
 
 checkOutBtn.addEventListener("click", 
     function() {

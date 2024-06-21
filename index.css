@@ -232,3 +232,17 @@ footer{
     border-radius: 3px;
     margin-bottom: 252px;
 }
+
+.star {
+    color:0;
+    cursor: pointer;
+}
+
+.yellow{
+    color:#065F46 !important;
+}
+
+.star-container{
+    cursor: pointer;
+    user-select: none;
+}
