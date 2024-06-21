@@ -181,6 +181,22 @@ footer{
 
 /* modal */
 
+form{
+    position: relative;
+}
+
+.close-form-btn{
+    position: absolute;
+    top: -30;
+    right: -10;
+    cursor: pointer;
+    background: none;
+    border: 0.5px solid #757575;
+    border-radius: 50%;
+    padding: 5px 8px;
+    font-size:16px;
+}
+
 .modal{
     width:524px;
     height: fit-content;

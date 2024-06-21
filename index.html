@@ -15,7 +15,7 @@
         <main>
             <ul id="list-element"></ul>
             <div class="afterpay-message-container hidden" id="afterpay-message-container">
-                <p>Thanks, James! Your order is on its way!</p>
+                <p></p>
                 <p>Please rate our services:</p>
                 <div class="star-container">
                     <span class="star" data-number="1">★</span>
@@ -48,14 +48,16 @@
         <div class="modal hidden" id = "modal">
             <form>
                 <h3 class="modal-title">Enter card details</h3>
-                <input type="text" required="required"
+                <input type="text" name="name" required="required"
                 pattern="[a-zA-Z ]+" placeholder="Enter your name">
 
-                <input type="text" required="required" 
+                <input type="text" name="cardNumber" required="required" 
                 pattern="[0-9]+" placeholder="Enter card number">
 
-                <input type="text" required="required" 
+                <input type="text" name="cardCVV" required="required" 
                 pattern="[0-9]{3}" placeholder="Enter CVV">
+
+                <button class="close-form-btn" id="close-form-btn">X</button>
 
                 <button class="complete-order-btn" id="pay-btn">Pay</button>
             </form>

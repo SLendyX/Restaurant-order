@@ -259,11 +259,20 @@ modalForm.addEventListener("submit", function(e){
         modalForm.parentElement.classList.toggle("hidden")
         orderFooter.classList.toggle("hidden")
         afterpayMessage.classList.toggle("hidden")
+
+        afterpayMessage.children[0].textContent = `Thanks, ${modalForm.name.value}! Your order is on its way!`
+
         window.scrollTo(0, document.body.scrollHeight);
         checkOutBtn.disabled = !checkOutBtn.disabled
 
         for(let button of document.getElementsByClassName("add-btn"))
             button.disabled = !button.disabled
+})
+
+
+document.getElementById("close-form-btn").addEventListener("click", function(){
+    this.parentElement.parentElement.classList.toggle("hidden")
+    checkOutBtn.disabled = !checkOutBtn.disabled
 })
 
 
